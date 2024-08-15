@@ -7,14 +7,14 @@
             <v-card>
               <v-card-title>Chat2DB</v-card-title>
               <v-card-text>
-                <ChatInput />
-                <DataDisplay
-                    :response-data="responseData"
-                    :response-headers="responseHeaders"
-                    :response-type="responseType"
-                    :is-loading="isLoading"
-                    :error="error"
-                />
+                <v-list>
+                  <v-list-item v-for="(message, index) in messages" :key="index">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ message.role }}: {{ message.content }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <ChatInput @message-sent="handleMessageSent" />
               </v-card-text>
             </v-card>
           </v-col>
@@ -26,19 +26,18 @@
 
 <script>
 import ChatInput from './components/ChatInput'
-import DataDisplay from './components/DataDisplay'
 
 export default {
   components: {
-    ChatInput,
-    DataDisplay
+    ChatInput
   },
   data: () => ({
-    responseData: null,
-    responseHeaders: [],
-    responseType: null,
-    isLoading: false,
-    error: null
-  })
+    messages: []
+  }),
+  methods: {
+    handleMessageSent(message) {
+      this.messages.push(message);
+    }
+  }
 }
 </script>
